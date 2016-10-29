@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ebcomm.pagatuserviciodemo"
-	version="1.0.0"
-	android-versionCode="1000"
-	ios-CFBundleVersion="1.1.1"
+<widget id="com.ebcomm.pagatuservicio"
+	version="1.0.1"
+	android-versionCode="1001"
+	ios-CFBundleVersion="1.1.2"
 	defaultlocale="es-419"
 	xmlns="http://www.w3.org/ns/widgets"
 	xmlns:cdv="http://cordova.apache.org/ns/1.0"
 	xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>PagatuservicioDemo</name>
+    <name>Pagatuservicio</name>
     <description>
         Contamos con una experiencia de más de 40 años en la industria del calzado en México, la cual nos permite mantener una alianza con nuestros proveedores para ofercerte calidad y moda a precios muy competitivos.
     </description>

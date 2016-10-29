@@ -1,7 +1,7 @@
 
 var app = {
     // App Members
-    appTitle: 'PagatuservicioDemo',
+    appTitle: 'Pagatuservicio',
     targetUrl: 'http://epagos.ebcomm.mx/pts.Home',
     allowNavigationUrls: [
         '*://epagos.ebcomm.mx/*',
