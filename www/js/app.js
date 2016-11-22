@@ -157,6 +157,12 @@ var app = {
 
             url = url.toLowerCase();
 
+            // pagatuservicio: donaciones en navegación externa
+            if (url.indexOf('categoria=6') !== -1 && url.indexOf("business_id=") !== -1) {
+              validated = false;
+              return false;
+            }
+
             for (i = 0; i < allowedUrls.length; i++) {
                 var test = allowedUrls[i];
 
