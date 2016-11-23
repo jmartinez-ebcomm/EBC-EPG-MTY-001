@@ -171,8 +171,8 @@ var app = {
 
             // pagatuservicio: donaciones en navegación externa
             if (
-                  url.indexOf('pts.Payment?categoria=6') !== -1 ||
-                  (url.indexOf('pts.Payment?business_id=') !== -1 && url.indexOf('categoria=6') !== -1)
+                  url.indexOf('pts.payment?categoria=6') !== -1 ||
+                  (url.indexOf('pts.payment?business_id=') !== -1 && url.indexOf('categoria=6') !== -1)
                ) {
               console.log('allowNavigation: false [donacion]');
               validated = false;
