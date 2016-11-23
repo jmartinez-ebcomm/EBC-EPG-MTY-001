@@ -106,9 +106,15 @@ var app = {
 
               if (app.externalRequest) {
                   // Automatic request to external url
+                  console.log('app.startup[e]: External Request');
+
+                  console.log('app.startup[e]: Open request url: ' + app.browserUrlRequest);
                   app.browser_open(app.browserUrlRequest);
+
+                  console.log('app.startup[e]: Open current url: ' + app.browserUrlCurrent);
                   app.browser_open(app.browserUrlCurrent);
               } else {
+                  console.log('app.startup[n]: Normal Request');
                   // Normal
                   if (typeof(pageName) != 'undefined' && pageName != null) {
                       // continue button
@@ -117,9 +123,11 @@ var app = {
                       continueButton.setAttribute('class', 'btn btn-default');
                       continueButton.addEventListener('click', app.continueButton_onClick, false);
                       // index page: automatic redirect
+                      console.log('app.startup[n]: Open request url: ' + app.browserUrlRequest);
                       app.browser_open(app.browserUrlRequest);
                   } else {
                       // error page: manual redirect
+                      console.log('app.startup[n]: Open error page');
                       app.errorPageBindEvents();
                   }
               }
@@ -138,8 +146,12 @@ var app = {
         console.log('inAppBrowser.open: ' + url);
 
         if (!app.allowNavigation(url)) {
+            console.log('inAppBrowser.open[e]: ' + url);
+
             window.open(url, '_system');
         } else {
+            console.log('inAppBrowser.open[n]: ' + url);
+
             app.browserRef = window.open(url, '_blank', 'location=no,toolbar=no,zoom=no,fullscreen=yes');
             app.browserRef.addEventListener('loadstart', app.browser_onLoadStart);
             app.browserRef.addEventListener('loadstop', app.browser_onLoadStop);
@@ -158,7 +170,11 @@ var app = {
             url = url.toLowerCase();
 
             // pagatuservicio: donaciones en navegación externa
-            if (url.indexOf('categoria=6') !== -1 && url.indexOf("business_id=") !== -1) {
+            if (
+                  url.indexOf('pts.Payment?categoria=6') !== -1 ||
+                  (url.indexOf('pts.Payment?business_id=') !== -1 && url.indexOf('categoria=6') !== -1)
+               ) {
+              console.log('allowNavigation: false [donacion]');
               validated = false;
               return false;
             }
@@ -216,12 +232,12 @@ var app = {
             }
 
             if (!validated) {
-                console.log('URL is not allowed for navigation: ' + url);
+                console.log('allowNavigation: false [' + url + ']');
             } else {
                 // Open any file in external browser
                 for (i = 0; i < fileExtensions.length; i++) {
                     if (url.endsWith(fileExtensions[i])) {
-                        console.log('URL has extension file: ' + url);
+                        console.log('allowNavigation: false [URL has extension file: ' + url + ']');
                         validated = false;
                         break;
                     }
@@ -230,7 +246,12 @@ var app = {
 
         } catch(err) {
             validated = false;
+            console.log('allowNavigation: false [exception]');
             console.log(err.Message);
+        }
+
+        if (validated) {
+            console.log('allowNavigation: true [' + url + ']');
         }
 
         return validated;
