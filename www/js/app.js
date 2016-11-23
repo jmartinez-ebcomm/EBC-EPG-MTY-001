@@ -304,8 +304,8 @@ var app = {
             window.plugins.spinnerDialog.hide();
 
             window.location.href = "error.html" +
-                "?request=" + decodeURIComponent(event.url) +
-                "&current=" + decodeURIComponent(app.browserUrlRequest) +
+                "?request=" + encodeURIComponent(event.url) +
+                "&current=" + encodeURIComponent(app.browserUrlRequest) +
                 "&external=true";
 
             return;
