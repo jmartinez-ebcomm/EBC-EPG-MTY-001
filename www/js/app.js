@@ -32,6 +32,7 @@ var app = {
     browserUrlCurrent: '',
     browserUrlRequest: '',
     externalRequest: false,
+    externalProcess: false,
     cancelLoading: false,
     // Initialize app
     initialize: function() {
@@ -68,6 +69,31 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
     },
+    clearScreen: function() {
+        var loadingComponent = document.querySelector('.loading');
+        var statusComponent = document.getElementById('status');
+        var messagesComponent = document.getElementById('messages');
+        var buttonsComponent = document.querySelector('.nav_buttons');
+
+        var statusText = statusComponent.children[0];
+        var messageText = messagesComponent.children[0];
+
+        // set title again
+        document.title = app.appTitle;
+
+	loadingComponent.setAttribute('class', 'loading');
+	statusComponent.setAttribute('class', 'blink');
+	statusText.setAttribute('class', 'event');
+	statusText.innerText = "Cargando";
+	messagesComponent.setAttribute('class', 'hide');
+	buttonsComponent.setAttribute('class', 'nav_buttons hide');
+
+	var continueButton = document.getElementById("continue");
+	continueButton.setAttribute('class', 'btn btn-info hide');
+
+	var backButton = document.getElementById("back");
+	backButton.setAttribute('class', 'btn btn-default hide');
+    },
     // Device ready Event
     receivedEvent: function(e) {
         var pageName = document.getElementById('index_page');
@@ -97,22 +123,25 @@ var app = {
               // Stop interval
               app.onStartupIntervalCompleted();
 
-              loadingComponent.setAttribute('class', 'hide');
+              loadingComponent.setAttribute('class', 'loading hide');
               statusComponent.setAttribute('class', '');
               statusText.setAttribute('class', 'event success');
               statusText.innerText = "Listo";
               messagesComponent.setAttribute('class', 'hide');
-              buttonsComponent.setAttribute('class', '');
+              buttonsComponent.setAttribute('class', 'nav_buttons');
 
               if (app.externalRequest) {
                   // Automatic request to external url
                   console.log('app.startup[e]: External Request');
 
+			app.clearScreen();
+
                   console.log('app.startup[e]: Open request url: ' + app.browserUrlRequest);
-                  app.browser_open(app.browserUrlRequest);
+                  app.browser_open(app.browserUrlRequest, true);
 
                   console.log('app.startup[e]: Open current url: ' + app.browserUrlCurrent);
                   app.browser_open(app.browserUrlCurrent);
+
               } else {
                   console.log('app.startup[n]: Normal Request');
                   // Normal
@@ -124,7 +153,11 @@ var app = {
                       continueButton.addEventListener('click', app.continueButton_onClick, false);
                       // index page: automatic redirect
                       console.log('app.startup[n]: Open request url: ' + app.browserUrlRequest);
-                      app.browser_open(app.browserUrlRequest);
+
+			setTimeout(function() {
+				app.clearScreen();
+				app.browser_open(app.browserUrlRequest);
+			}, 1000);
                   } else {
                       // error page: manual redirect
                       console.log('app.startup[n]: Open error page');
@@ -142,10 +175,13 @@ var app = {
         }
     },
     // inAppBrowser open
-    browser_open: function(url) {
-        console.log('inAppBrowser.open: ' + url);
+    browser_open: function(url, external) {
+	if (external === undefined) external = false;
 
-        if (!app.allowNavigation(url)) {
+	if (external) console.log('inAppBrowser.open_external: ' + url);
+	else console.log('inAppBrowser.open: ' + url);
+
+        if (external || !app.allowNavigation(url)) {
             console.log('inAppBrowser.open[e]: ' + url);
 
             window.open(url, '_system');
@@ -168,6 +204,12 @@ var app = {
         try {
 
             url = url.toLowerCase();
+
+		// external URL
+		if ( url.indexOf('error.html') !== -1 && url.indexOf('external=true') !== -1 ) {
+			validated = true;
+			return true;
+		}
 
             // pagatuservicio: donaciones en navegación externa
             if (
@@ -259,25 +301,31 @@ var app = {
     // inAppBrowser Events
     //
     // inAppBrowser loadstart
+    currentLoadStart: "",
     browser_onLoadStart: function(event) {
         console.log('inAppBrowser.loadstart: ' + event.url);
 
+	if (event.url != app.currentLoadStart)
+		app.currentLoadStart = event.url;
+	else {
+		var i = 0;
+		var url = event.url;
+		var validated = true;
+
+                // Open any file in external browser
+                for (i = 0; i < app.fileExtensions.length; i++) {
+                    if (url.endsWith(app.fileExtensions[i])) {
+                        console.log('loadstart-allowNav: false [URL has extension file: ' + url + ']');
+                        validated = false;
+                        break;
+                    }
+                }
+
+		if (!validated)
+			return;
+	}
+
         // 10 secs maximum showing the loading message
-
-        /*
-        window.plugins.spinnerDialog.show(null, "Cargando...", true);
-	app.cancelLoading = true;
-
-	setTimeout(function () {
-		if (app.cancelLoading) {
-			window.plugins.spinnerDialog.hide();
-			window.plugins.spinnerDialog.hide();
-			app.cancelLoading = false;
-		}
-        }, 10000);
-
-         */
-
         window.plugins.spinnerDialog.show(null, "Cargando...", function () {
             setTimeout(function () {
                 window.plugins.spinnerDialog.hide();
@@ -287,29 +335,27 @@ var app = {
 
         // Allow-Navigation
         if (!app.allowNavigation(event.url)) {
+		console.log('inAppBrowser.loadstart: Redirect to error page');
 
-            // if (device.platform.toUpperCase() === 'ANDROID') {
-            //     navigator.notification.alert('Android');
-            //     // navigator.app.loadUrl(event.url, { openExternal: true });
-            // } else {
-            //     navigator.notification.alert('Other: ' + device.platform.toUpperCase());
-            //     // window.open(event.url, '_system');
-            // }
+		app.externalProcess = true;
 
-            // una vez cargada la pagina externa, intenta llamar esa pagina de forma externa
-            // pero no funciona asi
-            // app.browserRef.open(app.browserUrlRequest, '_system');
+		window.plugins.spinnerDialog.hide();
+		window.plugins.spinnerDialog.hide();
 
-            window.plugins.spinnerDialog.hide();
-            window.plugins.spinnerDialog.hide();
-
-            window.location.href = "error.html" +
+            var url = "error.html" +
                 "?request=" + encodeURIComponent(event.url) +
                 "&current=" + encodeURIComponent(app.browserUrlRequest) +
                 "&external=true";
 
+		setTimeout(function () {
+			stopAndStart(url);
+		}, 1000);
+
+		app.browserRef.close();
+
             return;
         } else {
+		console.log('inAppBrowser.loadstart: Continue normal');
             // Updates current URL
             if (app.browserUrlCurrent != app.browserUrlRequest) {
                 app.browserUrlCurrent = app.browserUrlRequest;
@@ -325,21 +371,29 @@ var app = {
         window.plugins.spinnerDialog.hide();
 	      app.cancelLoading = false;
 
-        // Va a la pagina que esta cargada en el wrapper y le cambia los anchor para que ejecute externo
-        // pero no funciona asi
-        // setTimeout(function() {
-        //     app.browserRef.executeScript(
-        //         { code: "var externalTargetCounter = 0; document.querySelectorAll('a[href]').forEach(function(a) { var href = a.getAttribute('href'); if( href != null && href != '' && href != '#' && !href.startsWith('..') && !href.startsWith('//') && !href.startsWith('file:') && !href.startsWith('mailto:') && !href.startsWith('geo:') && !href.startsWith('tel:') && !href.startsWith('sms:') ) { if (href.startsWith('http://www.haztutienda.com') || href.startsWith('https://www.facebook')) { externalTargetCounter++; a.setAttribute('target', '_system'); a.addEventListener('click', function (e) { var element = e.target; console.log('open external url: ' + element.href); window.open(element.href, '_system'); return false; }, false); } } }); externalTargetCounter;" },
-        //         function(data) {
-        //             console.log('External targets: ' + data);
-        //             navigator.notification.alert('External targets: ' + data);
-        //         }
-        //     );
-        // }, 100);
     },
     // inAppBrowser loaderror
     browser_onLoadError: function(event) {
         console.log('inAppBrowser.loaderror: ' + event.url);
+	console.log('Error code: ' + event.code + ', Message: ' + event.message);
+
+	if (event.url == app.currentLoadStart) {
+                var i = 0;
+                var url = event.url;
+                var validated = true;
+
+                // Open any file in external browser
+                for (i = 0; i < app.fileExtensions.length; i++) {
+                    if (url.endsWith(app.fileExtensions[i])) {
+                        console.log('loaderror-allowNav: false [URL has extension file: ' + url + ']');
+                        validated = false;
+                        break;
+                    }
+                }
+
+                if (!validated)
+                        return;
+	}
 
         // Allow-Navigation
         if (app.allowNavigation(event.url)) {
@@ -355,9 +409,10 @@ var app = {
         // -1009: The Internet connection appears to be offline.
 
         if (event.code != '-999') {
-          window.location.href = "error.html" +
-              "?request=" + encodeURIComponent(app.browserUrlRequest) +
-              "&current=" + encodeURIComponent(app.browserUrlCurrent);
+		console.log('inAppBrowser.loaderror: Redirect to error page');
+		window.location.href = "error.html" +
+			"?request=" + encodeURIComponent(app.browserUrlRequest) +
+			"&current=" + encodeURIComponent(app.browserUrlCurrent);
         }
     },
     // inAppBrowser exit
@@ -394,11 +449,13 @@ var app = {
     backButton_onClick: function() {
         console.log('back.click');
         app.browser_open(app.browserUrlCurrent);
+	app.clearScreen();
     },
     // Event continue.click
     continueButton_onClick: function() {
         console.log('continue.click');
         app.browser_open(app.browserUrlRequest);
+	app.clearScreen();
     },
     // Gets query string parameters array
     getParameters: function() {
@@ -449,3 +506,11 @@ function executeScript() {
     });
     externalTargetCounter;
 }
+
+
+function stopAndStart(url) {
+	console.log('stopAndStart: url=' + url);
+	app.currentLoadStart = "";
+	window.location.href = url;
+}
+
