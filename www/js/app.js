@@ -70,22 +70,23 @@ var app = {
         app.receivedEvent('deviceready');
     },
     clearScreen: function() {
-        var loadingComponent = document.querySelector('.loading');
-        var statusComponent = document.getElementById('status');
+        var loadingComponent = document.getElementById('loading');
+        var statusText = document.getElementById('statusText');
         var messagesComponent = document.getElementById('messages');
         var buttonsComponent = document.querySelector('.nav_buttons');
 
-        var statusText = statusComponent.children[0];
-        var messageText = messagesComponent.children[0];
+        var messageText = messagesComponent.children[0].children[0];
 
         // set title again
         document.title = app.appTitle;
+	///////////////
 
-	loadingComponent.setAttribute('class', 'loading');
-	statusComponent.setAttribute('class', 'blink');
-	statusText.setAttribute('class', 'event');
-	statusText.innerText = "Cargando";
-	messagesComponent.setAttribute('class', 'hide');
+	loadingComponent.setAttribute('class', 'blink');
+	//statusComponent.setAttribute('class', 'blink');
+	statusText.setAttribute('class', 'event listening');
+	statusText.innerText = "Cargando...";
+	//messagesComponent.setAttribute('class', 'hide');
+        messagesComponent.setAttribute('class', 'descrip_aviso hide');
 	buttonsComponent.setAttribute('class', 'nav_buttons hide');
 
 	var continueButton = document.getElementById("continue");
@@ -97,13 +98,12 @@ var app = {
     // Device ready Event
     receivedEvent: function(e) {
         var pageName = document.getElementById('index_page');
-        var loadingComponent = document.querySelector('.loading');
-        var statusComponent = document.getElementById('status');
+        var loadingComponent = document.getElementById('loading');
+        var statusText = document.getElementById('statusText');
         var messagesComponent = document.getElementById('messages');
         var buttonsComponent = document.querySelector('.nav_buttons');
 
-        var statusText = statusComponent.children[0];
-        var messageText = messagesComponent.children[0];
+        var messageText = messagesComponent.children[0].children[0];
 
         // set title again
         document.title = this.appTitle;
@@ -114,7 +114,7 @@ var app = {
 
               statusText.setAttribute('class', 'event error');
               statusText.innerText = "Reconectando...";
-              messagesComponent.setAttribute('class', '');
+              messagesComponent.setAttribute('class', 'descrip_aviso');
               messageText.innerText = "Se presentó un problema de conexión a Internet.";
 
            } else {
@@ -123,12 +123,12 @@ var app = {
               // Stop interval
               app.onStartupIntervalCompleted();
 
-              loadingComponent.setAttribute('class', 'loading hide');
-              statusComponent.setAttribute('class', '');
-              statusText.setAttribute('class', 'event success');
+              loadingComponent.setAttribute('class', 'blink hide');
+
+              statusText.setAttribute('class', 'event received');
               statusText.innerText = "Listo";
-              messagesComponent.setAttribute('class', 'hide');
-              buttonsComponent.setAttribute('class', 'nav_buttons');
+              messagesComponent.setAttribute('class', 'descrip_aviso hide');
+              buttonsComponent.setAttribute('class', 'nav_buttons hide');
 
               if (app.externalRequest) {
                   // Automatic request to external url
@@ -161,6 +161,7 @@ var app = {
                   } else {
                       // error page: manual redirect
                       console.log('app.startup[n]: Open error page');
+                      buttonsComponent.setAttribute('class', 'nav_buttons');
                       app.errorPageBindEvents();
                   }
               }
