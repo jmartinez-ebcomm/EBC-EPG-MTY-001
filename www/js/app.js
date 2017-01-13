@@ -2,9 +2,9 @@
 var app = {
     // App Members
     appTitle: 'Pagatuservicio',
-    targetUrl: 'http://epagos.ebcomm.mx/pts.Home',
+    targetUrl: 'http://pts.epagos.mx/',
     allowNavigationUrls: [
-        '*://epagos.ebcomm.mx/*',
+        '*://pts.epagos.mx/*',
         '*://www.paypal.com/*',
         '*://secure.na.tnspayments.com/*',
         '*://banamex.na.tnspayments.com/*',
@@ -71,6 +71,7 @@ var app = {
     },
     clearScreen: function() {
         var loadingComponent = document.getElementById('loading');
+        var statusBoxComponent = document.getElementById('statusBox');
         var statusText = document.getElementById('statusText');
         var messagesComponent = document.getElementById('messages');
         var buttonsComponent = document.querySelector('.nav_buttons');
@@ -81,24 +82,24 @@ var app = {
         document.title = app.appTitle;
 	///////////////
 
-	loadingComponent.setAttribute('class', 'blink');
-	//statusComponent.setAttribute('class', 'blink');
+	loadingComponent.setAttribute('class', 'loader');
+	statusBoxComponent.setAttribute('class', 'blink');
 	statusText.setAttribute('class', 'event listening');
 	statusText.innerText = "Cargando...";
-	//messagesComponent.setAttribute('class', 'hide');
         messagesComponent.setAttribute('class', 'descrip_aviso hide');
 	buttonsComponent.setAttribute('class', 'nav_buttons hide');
 
 	var continueButton = document.getElementById("continue");
-	continueButton.setAttribute('class', 'btn btn-info hide');
+	continueButton.setAttribute('class', 'hide');
 
 	var backButton = document.getElementById("back");
-	backButton.setAttribute('class', 'btn btn-default hide');
+	backButton.setAttribute('class', 'hide');
     },
     // Device ready Event
     receivedEvent: function(e) {
         var pageName = document.getElementById('index_page');
         var loadingComponent = document.getElementById('loading');
+        var statusBoxComponent = document.getElementById('statusBox');
         var statusText = document.getElementById('statusText');
         var messagesComponent = document.getElementById('messages');
         var buttonsComponent = document.querySelector('.nav_buttons');
@@ -123,7 +124,8 @@ var app = {
               // Stop interval
               app.onStartupIntervalCompleted();
 
-              loadingComponent.setAttribute('class', 'blink hide');
+              loadingComponent.setAttribute('class', 'loader hide');
+              statusBoxComponent.setAttribute('class', 'blink hide');
 
               statusText.setAttribute('class', 'event received');
               statusText.innerText = "Listo";
@@ -149,7 +151,7 @@ var app = {
                       // continue button
                       app.browserUrlRequest = app.targetUrl;
                       var continueButton = document.getElementById("continue");
-                      continueButton.setAttribute('class', 'btn btn-default');
+                      continueButton.setAttribute('class', '');
                       continueButton.addEventListener('click', app.continueButton_onClick, false);
                       // index page: automatic redirect
                       console.log('app.startup[n]: Open request url: ' + app.browserUrlRequest);
@@ -435,14 +437,14 @@ var app = {
         var backButton = document.getElementById("back");
         if (!(app.browserUrlCurrent == 'undefined' || app.browserUrlCurrent == '') &&
           app.browserUrlCurrent != app.browserUrlRequest) {
-            backButton.setAttribute('class', 'btn btn-info');
+            backButton.setAttribute('class', '');
             backButton.addEventListener('click', app.backButton_onClick, false);
         }
 
         // continue button
         var continueButton = document.getElementById("continue");
         if (!(app.browserUrlRequest == 'undefined' || app.browserUrlRequest == '')) {
-            continueButton.setAttribute('class', 'btn btn-default');
+            continueButton.setAttribute('class', '');
             continueButton.addEventListener('click', app.continueButton_onClick, false);
         }
     },
