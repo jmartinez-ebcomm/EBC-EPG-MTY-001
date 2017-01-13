@@ -72,7 +72,7 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
 
-    <allow-navigation href="*://pts.epagos.mx/*" />
+    <allow-navigation href="*://epagos.ebcomm.mx/*" />
     <allow-navigation href="*://www.paypal.com/*" />
     <allow-navigation href="*://secure.na.tnspayments.com/*" />
     <allow-navigation href="*://banamex.na.tnspayments.com/*" />
