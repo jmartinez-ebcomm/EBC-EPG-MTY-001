@@ -2,9 +2,9 @@
 var app = {
     // App Members
     appTitle: 'Pagatuservicio',
-    targetUrl: 'http://epagos.ebcomm.mx/pts.Home',
+    targetUrl: 'https://www.pagatuservicio.com/pts.Home',
     allowNavigationUrls: [
-        '*://epagos.ebcomm.mx/*',
+        '*://www.pagatuservicio.com/*',
         '*://www.paypal.com/*',
         '*://secure.na.tnspayments.com/*',
         '*://banamex.na.tnspayments.com/*',
