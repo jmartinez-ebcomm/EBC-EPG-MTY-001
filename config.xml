@@ -32,7 +32,8 @@
     <preference name="OverrideUserAgent" value="Mozilla/5.0 /Cordova /PhoneGap /Android /iOS /Winphone" />
     -->
     <preference name="DisallowOverscroll" value="true"/>
-    <preference name="SplashScreen" value="screen" />
+    <!-- <preference name="SplashScreen" value="screen" /> -->
+    <preference name="SplashScreen" value="splash" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="AutoHideSplashScreen" value="true" />
 
@@ -64,10 +65,12 @@
     <!-- windows-arch: anycpu, arm, x86, and x64 -->
     <preference name="windows-arch" value="anycpu" />
 
+	<!--
     <feature name="SplashScreen" >
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
         <param name="onload" value="true" />
     </feature>
+	-->
 
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
