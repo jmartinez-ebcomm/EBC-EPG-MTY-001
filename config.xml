@@ -40,7 +40,7 @@
     <preference name="target-device" value="universal" />
     <preference name="prerendered-icon" value="true" />
     <preference name="detect-data-types" value="true" />
-    <preference name="exit-on-suspend" value="true" />
+    <preference name="exit-on-suspend" value="false" />
     <preference name="deployment-target" value="9.0" />
     <gap:config-file platform="ios" parent="ITSAppUsesNonExemptEncryption" mode="add">
        <false/>
@@ -55,6 +55,7 @@
     <!--
     <preference name="android-windowSoftInputMode" value="stateVisible|adjustResize" />
     -->
+    <preference name="SplashMaintainAspectRatio" value="true" />
 
     <!-- ejemplo del chino -->
     <preference name="windows-target-version" value="8.1" />
@@ -82,8 +83,10 @@
     <allow-navigation href="*://banamex.dialectpayments.com/*" />
 
     <content src="index.html" />
+	<!--
     <icon src="res/android/icon-ldpi.png" />
     <splash src="res/android/splash-port-ldpi.png" />
+	-->
 
     <platform name="android">
         <allow-intent href="market:*" />
@@ -115,6 +118,7 @@
         <splash src="res/android/splash-port-xxxhdpi.png" gap:platform="android" gap:qualifier="port-xxxhdpi"/>
         <splash src="res/android/splash-land-xxxhdpi.png" gap:platform="android" gap:qualifier="land-xxxhdpi"/>
 	-->
+	<!--
         <splash src="res/android/splash-port-ldpi.png" density="port-ldpi" qualifier="port-ldpi"/>
         <splash src="res/android/splash-land-ldpi.png" density="land-ldpi" qualifier="land-ldpi"/>
         <splash src="res/android/splash-port-mdpi.png" density="port-mdpi" qualifier="port-mdpi"/>
@@ -127,6 +131,21 @@
         <splash src="res/android/splash-land-xxhdpi.png" density="land-xxhdpi" qualifier="land-xxhdpi"/>
         <splash src="res/android/splash-port-xxxhdpi.png" density="port-xxxhdpi" qualifier="port-xxxhdpi"/>
         <splash src="res/android/splash-land-xxxhdpi.png" density="land-xxxhdpi" qualifier="land-xxxhdpi"/>
+	-->
+	
+        <splash src="res/android/splash-port-ldpi.png" qualifier="port-ldpi"/>
+        <splash src="res/android/splash-land-ldpi.png" qualifier="land-ldpi"/>
+        <splash src="res/android/splash-port-mdpi.png" qualifier="port-mdpi"/>
+        <splash src="res/android/splash-land-mdpi.png" qualifier="land-mdpi"/>
+        <splash src="res/android/splash-port-hdpi.png" qualifier="port-hdpi"/>
+        <splash src="res/android/splash-land-hdpi.png" qualifier="land-hdpi"/>
+        <splash src="res/android/splash-port-xhdpi.png" qualifier="port-xhdpi"/>
+        <splash src="res/android/splash-land-xhdpi.png" qualifier="land-xhdpi"/>
+        <splash src="res/android/splash-port-xxhdpi.png" qualifier="port-xxhdpi"/>
+        <splash src="res/android/splash-land-xxhdpi.png" qualifier="land-xxhdpi"/>
+        <splash src="res/android/splash-port-xxxhdpi.png" qualifier="port-xxxhdpi"/>
+        <splash src="res/android/splash-land-xxxhdpi.png" qualifier="land-xxxhdpi"/>
+
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
