@@ -174,8 +174,8 @@
 	      <!-- Splash: iPhone 6 (2x)
         <splash src="res/ios/Default-667h-Portrait.png" width="750" height="1334"/>
         <splash src="res/ios/Default-667h-Landscape.png" width="1334" height="750"/> -->
-        <splash src="res/ios/Default-667h-Portrait@2x-iphone.png" width="750" height="1334"/>
-        <splash src="res/ios/Default-667h-Landscape@2x-iphone.png" width="1334" height="750"/>
+        <splash src="res/ios/Default-667h-Portrait@2x~iphone.png" width="750" height="1334"/>
+        <splash src="res/ios/Default-667h-Landscape@2x~iphone.png" width="1334" height="750"/>
 
         <!-- Splash: iPhone 6 Plus (3x) -->
         <splash src="res/ios/Default-Portrait@3x~iphone.png" width="1080" height="1920"/>
