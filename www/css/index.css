@@ -8,11 +8,25 @@ body{
   -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
   -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
   font-family: 'Heebo', sans-serif;
+	/*
   background: url('../img/background.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover; 
+	*/
+      background-image: url('../img/background.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      position: fixed;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      z-index: -1;
+      -webkit-transform: translateZ(0);
+      pointer-events: none;
 }
 
 /* Portrait layout (default) */
