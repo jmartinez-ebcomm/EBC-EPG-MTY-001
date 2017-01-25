@@ -77,6 +77,8 @@ var app = {
     },
     //
     onDeviceReady: function() {
+        console.log('current=' + app.browserUrlCurrent);
+        console.log('request=' + app.browserUrlRequest);
         app.receivedEvent('deviceready');
     },
     clearScreen: function() {
@@ -474,13 +476,13 @@ var app = {
     },
     // Event back.click
     backButton_onClick: function() {
-        console.log('back.click');
+        console.log('back.click: ' + app.browserUrlCurrent);
         app.browser_open(app.browserUrlCurrent);
 	app.clearScreen();
     },
     // Event continue.click
     continueButton_onClick: function() {
-        console.log('continue.click');
+        console.log('continue.click: ' + app.browserUrlRequest);
         app.browser_open(app.browserUrlRequest);
 	//app.clearScreen();
     },
